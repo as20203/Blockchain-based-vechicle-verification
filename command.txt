@@ -16,7 +16,7 @@ export CHANNEL_NAME=mychannel  && ../bin/configtxgen -profile VehicleRegistratio
 
 
 
-docker-compose -f docker-compose-cli.yaml up -d
+docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml up -d
 
 docker exec -it cli bash
 
@@ -30,7 +30,6 @@ peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-ar
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/users/Admin@nadra2.example.com/msp CORE_PEER_ADDRESS=peer0.nadra2.example.com:9051 CORE_PEER_LOCALMSPID="Nadra2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/peers/peer0.nadra2.example.com/tls/ca.crt peer channel join -b mychannel.block
 
 
-docker-compose -f docker-compose-cli.yaml down --volumes --remove-orphans
 
 
 peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Vehiclereg1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
@@ -38,6 +37,8 @@ peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-ar
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/users/Admin@nadra2.example.com/msp CORE_PEER_ADDRESS=peer0.nadra2.example.com:9051 CORE_PEER_LOCALMSPID="Nadra2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/peers/peer0.nadra2.example.com/tls/ca.crt peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Nadra2MSP.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 
+###Use in emergency
+docker-compose -f docker-compose-cli.yaml down --volumes --remove-orphans
 
 
 
