@@ -1,0 +1,43 @@
+../bin/cryptogen generate --config=./crypto-config.yaml
+
+
+export FABRIC_CFG_PATH=$PWD
+
+
+../bin/configtxgen -profile VehicleRegistrationOrdererGenesis -channelID vehicle-sys-channel -outputBlock ./channel-artifacts/genesis.block
+
+export CHANNEL_NAME=mychannel  && ../bin/configtxgen -profile VehicleRegistrationChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+
+../bin/configtxgen -profile VehicleRegistrationChannel -outputAnchorPeersUpdate ./channel-artifacts/VehicleRegistrationMSPanchors.tx -channelID $CHANNEL_NAME -asOrg VehicleRegistrationMSP
+
+
+../bin/configtxgen -profile VehicleRegistrationChannel -outputAnchorPeersUpdate ./channel-artifacts/NadraMSPanchors.tx -channelID $CHANNEL_NAME -asOrg NadraMSP
+
+
+
+
+docker-compose -f docker-compose-cli.yaml up -d
+
+docker exec -it cli bash
+
+export CHANNEL_NAME=mychannel
+
+peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+ peer channel join -b mychannel.block
+
+
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/users/Admin@nadra2.example.com/msp CORE_PEER_ADDRESS=peer0.nadra2.example.com:9051 CORE_PEER_LOCALMSPID="Nadra2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/peers/peer0.nadra2.example.com/tls/ca.crt peer channel join -b mychannel.block
+
+
+docker-compose -f docker-compose-cli.yaml down --volumes --remove-orphans
+
+
+peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Vehiclereg1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/users/Admin@nadra2.example.com/msp CORE_PEER_ADDRESS=peer0.nadra2.example.com:9051 CORE_PEER_LOCALMSPID="Nadra2MSP" CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nadra2.example.com/peers/peer0.nadra2.example.com/tls/ca.crt peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Nadra2MSP.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+
+
+
+
