@@ -1,0 +1,61 @@
+{
+    "name": "first-network-nadra2",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Nadra2",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Nadra2": {
+            "mspid": "Nadra2MSP",
+            "peers": [
+                "peer0.nadra2.example.com",
+                "peer1.nadra2.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.nadra2.example.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.nadra2.example.com": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYDCCAgagAwIBAgIRAILMeA1/o8rggYWgnhnQj+YwCgYIKoZIzj0EAwIwejEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNvbTEhMB8GA1UEAxMY\ndGxzY2EubmFkcmEyLmV4YW1wbGUuY29tMB4XDTE5MTEwOTE5NTcwMFoXDTI5MTEw\nNjE5NTcwMFowejELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU\nBgNVBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNv\nbTEhMB8GA1UEAxMYdGxzY2EubmFkcmEyLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEMhr083L47bpg5xMyR4F5LfNe1lEoKTHE/Z2244046f+L\niDLNZ94xe6dcX2AMOk1XaOzfmBTsVP+p0Tjx0gEW26NtMGswDgYDVR0PAQH/BAQD\nAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD\nAQH/MCkGA1UdDgQiBCBGYMynjK/85PVc/KLSLTL9e/gnBQfjqj2tHNjQh68oJzAK\nBggqhkjOPQQDAgNIADBFAiEA5AuCaivXfZX3HdqFafyq+Ng7auFBFb/Jv9tNML5+\n5FsCIF8LyjKSjrUaFJbioGgWa3hIKO2eQP4KggW9fBCMzYqH\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.nadra2.example.com",
+                "hostnameOverride": "peer0.nadra2.example.com"
+            }
+        },
+        "peer1.nadra2.example.com": {
+            "url": "grpcs://localhost:10051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYDCCAgagAwIBAgIRAILMeA1/o8rggYWgnhnQj+YwCgYIKoZIzj0EAwIwejEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNvbTEhMB8GA1UEAxMY\ndGxzY2EubmFkcmEyLmV4YW1wbGUuY29tMB4XDTE5MTEwOTE5NTcwMFoXDTI5MTEw\nNjE5NTcwMFowejELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU\nBgNVBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNv\nbTEhMB8GA1UEAxMYdGxzY2EubmFkcmEyLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEMhr083L47bpg5xMyR4F5LfNe1lEoKTHE/Z2244046f+L\niDLNZ94xe6dcX2AMOk1XaOzfmBTsVP+p0Tjx0gEW26NtMGswDgYDVR0PAQH/BAQD\nAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD\nAQH/MCkGA1UdDgQiBCBGYMynjK/85PVc/KLSLTL9e/gnBQfjqj2tHNjQh68oJzAK\nBggqhkjOPQQDAgNIADBFAiEA5AuCaivXfZX3HdqFafyq+Ng7auFBFb/Jv9tNML5+\n5FsCIF8LyjKSjrUaFJbioGgWa3hIKO2eQP4KggW9fBCMzYqH\n-----END CERTIFICATE-----\n"
+
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.nadra2.example.com",
+                "hostnameOverride": "peer1.nadra2.example.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.nadra2.example.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca.nadra2.example.com",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICWTCCAgCgAwIBAgIRAI3X501C9U9IY1pig2mie3QwCgYIKoZIzj0EAwIwdzEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNvbTEeMBwGA1UEAxMV\nY2EubmFkcmEyLmV4YW1wbGUuY29tMB4XDTE5MTEwOTE5NTcwMFoXDTI5MTEwNjE5\nNTcwMFowdzELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNV\nBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTEm5hZHJhMi5leGFtcGxlLmNvbTEe\nMBwGA1UEAxMVY2EubmFkcmEyLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZI\nzj0DAQcDQgAEJnUY7N7l+zGaKzu6mo7nCnZhMmfmbSNvV9aYil70PNYgvhlNKRWw\n4PkUV/uvYWMNr21UqEsCzSg/Et+pKPFXx6NtMGswDgYDVR0PAQH/BAQDAgGmMB0G\nA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkG\nA1UdDgQiBCDh88ENw1XCyFGL7KOa+oRSiH8LZNqV0mdS9Z3fSckXFTAKBggqhkjO\nPQQDAgNHADBEAiAX/5okaB3NKQSLvswUzJzgd/jseyDyp0LNtVcCIYEPsQIgRDI5\nNh+WwA7+xR5hd8OX3q0PMRtN1ZJfL+ZnVvn8fLo=\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

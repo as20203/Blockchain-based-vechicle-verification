@@ -16,7 +16,7 @@ export CHANNEL_NAME=mychannel  && ../bin/configtxgen -profile VehicleRegistratio
 
 
 
-docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml up -d
+docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml -f docker-compose-ca.yaml up -d
 
 docker exec -it cli bash
 
@@ -38,7 +38,7 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 
 
 ###Use in emergency
-docker-compose -f docker-compose-cli.yaml down --volumes --remove-orphans
+docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml -f docker-compose-ca.yaml down --volumes --remove-orphans
 
 
 
