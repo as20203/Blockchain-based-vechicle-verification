@@ -45,7 +45,7 @@ CORE_PEER_ADDRESS=peer0.vehiclereg1.example.com:7051
 CORE_PEER_LOCALMSPID="Vehiclereg1MSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Vehiclereg1.example.com/peers/peer0.Vehiclereg1.example.com/tls/ca.crt
 
-peer chaincode install -n myfyp -v 1.6 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-6" -l "node"
+peer chaincode install -n myfyp -v 1.0 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-1" -l "node"
 
 
 
@@ -55,7 +55,7 @@ CORE_PEER_ADDRESS=peer1.vehiclereg1.example.com:8051
 CORE_PEER_LOCALMSPID="Vehiclereg1MSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Vehiclereg1.example.com/peers/peer0.Vehiclereg1.example.com/tls/ca.crt
 
-peer chaincode install -n myfyp -v 1.6 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-6" -l "node"
+peer chaincode install -n myfyp -v 1.0 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-1" -l "node"
 
 ####peer0.nadra2.example.com
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Nadra2.example.com/users/Admin@Nadra2.example.com/msp
@@ -63,7 +63,7 @@ CORE_PEER_ADDRESS=peer0.nadra2.example.com:9051
 CORE_PEER_LOCALMSPID="Nadra2MSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Nadra2.example.com/peers/peer0.Nadra2.example.com/tls/ca.crt
 
-peer chaincode install -n myfyp -v 1.6 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-6" -l "node"
+peer chaincode install -n myfyp -v 1.0 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-1" -l "node"
 
 
 ####peer0.nadra2.example.com
@@ -72,7 +72,7 @@ CORE_PEER_ADDRESS=peer1.nadra2.example.com:10051
 CORE_PEER_LOCALMSPID="Nadra2MSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Nadra2.example.com/peers/peer0.Nadra2.example.com/tls/ca.crt
 
-peer chaincode install -n myfyp -v 1.6 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-6" -l "node"
+peer chaincode install -n myfyp -v 1.0 -p "/opt/gopath/src/github.com/chaincode/fyp-contract-1" -l "node"
 
 
 
@@ -81,7 +81,9 @@ peer chaincode install -n myfyp -v 1.6 -p "/opt/gopath/src/github.com/chaincode/
 peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n myfyp -v 1.0 -c '{"Args":[]}' -P "AND ('Vehiclereg1MSP.peer','Nadra2MSP.peer')"
 
 ##Upgrade  on channel
-peer chaincode upgrade --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -o orderer.example.com:7050 -C mychannel -n myfyp -l "node" -v 1.6 -c '{"Args":[]}' -P "AND ('Vehiclereg1MSP.peer','Nadra2MSP.peer')"
+peer chaincode upgrade --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -o orderer.example.com:7050 -C mychannel -n myfyp -l "node" -v 2.1 -c '{"Args":[]}' -P "AND ('Vehiclereg1MSP.peer','Nadra2MSP.peer')"
+
+heroku config:set WEB_CONCURRENCY=1
 
 
 ###stop all containers

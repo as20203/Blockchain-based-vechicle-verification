@@ -29,7 +29,7 @@ class testContract extends Contract {
           horsePowerOrCC: "1400",
           transactionType:'CREATE',
           statusOfVehicle:'unissued',
-          liscenseNumber:'APPLIED FOR',
+          licenseNumber:'APPLIED FOR',
           currentOwnerCNIC:'35202-6495066-7',
           authorizer :''
         }
@@ -81,7 +81,7 @@ class testContract extends Contract {
                 transactionType:"CREATE",
                 docType:"vehicle",
                 statusOfVehicle:"unissued",
-                liscenseNumber:"APPLIED FOR",
+                licenseNumber:"APPLIED FOR",
                 currentOwnerCNIC:cnicPurchaser,
                 authorizer:authorizer
             };
@@ -168,23 +168,25 @@ class testContract extends Contract {
 
 
     //Delete A Car
-    async deleteVehicle(ctx,key) {
-        const vehicleAsBytes = await ctx.stub.getState(key); // get the car from chaincode state
+    async deleteVehicle(ctx,vehicleNumber,authorizer) {
+        const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the car from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
             throw new Error(`${vehicleAsBytes} does not exist`);
         }else{
             const vehicle = JSON.parse(vehicleAsBytes.toString());
+            vehicle.authorizer   = authorizer;
             vehicle.transactionType='DELETE';
             vehicle.statusOfVehicle='unissued';
+
             await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
-            await ctx.stub.deleteState(key); 
+            await ctx.stub.deleteState(vehicleNumber); 
             console.log('Car deleted from the ledger Succesfully..');
         }
     }
 
 
     //Transfer Vehicle
-    async transferVehicle(ctx, vehicleNumber,  transferredTo, fatherNameOwner, cnicOwner, dateOfTransfer,authorizer) {
+    async transferVehicle(ctx, vehicleNumber,  transferredTo, fatherNameOwner, cnicOwner, dateOfTransfer,presentAddress,authorizer) {
         console.info('============= START : Transfer Vehicle ===========');
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the car from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
@@ -192,11 +194,12 @@ class testContract extends Contract {
         }
         const vehicle = JSON.parse(vehicleAsBytes.toString());
 
-        if(vehicle.transactionType==='CREATE' && vehicle.statusOfVehicle==='issued' && vehicle.liscenseNumber!=='APPLIED FOR'){
+        if(vehicle.transactionType==='CREATE' && vehicle.statusOfVehicle==='issued' && vehicle.licenseNumber!=='APPLIED FOR'){
             vehicle.transferredTo = transferredTo;
             vehicle.fatherNameOwner = fatherNameOwner;
             vehicle.cnicOwner = cnicOwner;
             vehicle.dateOfTransfer = dateOfTransfer;
+            vehicle.presentAddress = presentAddress
             vehicle.statusOfVehicle ="unissued";
             vehicle.transactionType="TRANSFER";
             vehicle.currentOwnerCNIC=cnicOwner;
@@ -210,8 +213,8 @@ class testContract extends Contract {
         console.info('============= END : Transfer Vehicle ===========');
     }
 
-    //GENERATE LISCENSE
-    async generateLiscense(ctx,vehicleNumber,liscenseNumber,authorizer){
+    //GENERATE LICENSE
+    async generateLicense(ctx,vehicleNumber,licenseNumber,authorizer){
         console.info('============= START : Verification by NADRA ===========');
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the car from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
@@ -220,11 +223,11 @@ class testContract extends Contract {
         const vehicle = JSON.parse(vehicleAsBytes.toString());
 
         if(vehicle.statusOfVehicle==="issued" || vehicle.transactionType==='TRANSFER'){
-            vehicle.liscenseNumber=liscenseNumber
+            vehicle.licenseNumber=licenseNumber
             vehicle.authorizer   = authorizer
             await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
         }else{
-            throw new Error("vehicle is not issued Can't give liscenseNumber.");
+            throw new Error("vehicle is not issued Can't give licenseNumber.");
         }
         console.info('============= END : Verified by NADRA ===========');
 
@@ -232,7 +235,7 @@ class testContract extends Contract {
 
 
     //VEHICLE VERIFICATION.
-    async nadraVerification(ctx,vehicleNumber){
+    async nadraVerification(ctx,vehicleNumber,authorizer){
         console.info('============= START : Verification by NADRA ===========');
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the car from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
@@ -242,6 +245,7 @@ class testContract extends Contract {
 
         if(vehicle.statusOfVehicle==="unissued"){
             vehicle.statusOfVehicle ="verified by NADRA";
+            vehicle.authorizer   = authorizer;
             await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
         }else{
             throw new Error("vehicle is not issued ");
@@ -250,7 +254,7 @@ class testContract extends Contract {
        
     }
 
-    async exciseVerification(ctx,vehicleNumber){
+    async exciseVerification(ctx,vehicleNumber,authorizer){
         console.info('============= START : Verification by Excise Department ===========');
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the car from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
@@ -260,6 +264,7 @@ class testContract extends Contract {
         const vehicle = JSON.parse(vehicleAsBytes.toString());
         if(vehicle.statusOfVehicle==="verified by NADRA"){
             vehicle.statusOfVehicle ="issued";
+            vehicle.authorizer = authorizer
             await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
         }else{
             throw new Error("vehicle is not issued by NADRA. ");
